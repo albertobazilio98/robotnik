@@ -22,7 +22,7 @@ def inverse_calculate(point, arms):
     theta2 = math.acos((x**2 + y**2 - l1**2 - l2**2)/(2*l1*l2))
 
     beta = math.atan2(x, y)
-    psi = math.acos((x**2 + y**2 + l1**2 - l2**2)/(2*l1*math.sqrt(x**2 + y**2)))
+    psi = math.acos((x**2 + y**2 + l1**2 - l2**2)/(2*l1*distance))
     theta1 = beta + (psi if theta2 < 0 else - psi)
 
 
