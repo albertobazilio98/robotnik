@@ -4,17 +4,16 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 def forward_calculate(arms, angles):
-    rad_angles = [math.radians(angle) for angle in angles]
-
     x = 0
     y = 0
-
+    angle_sum = 0
     points_x = [x]
     points_y = [y]
 
     for i in range(len(arms)):
-        x += arms[i] * math.cos(sum(rad_angles[:i+1]))
-        y += arms[i] * math.sin(sum(rad_angles[:i+1]))
+        angle_sum += math.radians(angles[i])
+        x += arms[i] * math.cos(angle_sum)
+        y += arms[i] * math.sin(angle_sum)
         points_x.append(x)
         points_y.append(y)
 

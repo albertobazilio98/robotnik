@@ -27,16 +27,17 @@ def inverse_calculate(point, arms):
 
     return [theta1, theta2], [math.degrees(theta1), math.degrees(theta2)]
 
-def forward_calculate(arms, rad_angles):
+def forward_calculate(arms, angles):
     x = 0
     y = 0
-
+    angle_sum = 0
     points_x = [x]
     points_y = [y]
 
     for i in range(len(arms)):
-        x += arms[i] * math.cos(sum(rad_angles[:i+1]))
-        y += arms[i] * math.sin(sum(rad_angles[:i+1]))
+        angle_sum += angles[i]
+        x += arms[i] * math.cos(angle_sum)
+        y += arms[i] * math.sin(angle_sum)
         points_x.append(x)
         points_y.append(y)
 
@@ -70,26 +71,28 @@ def atualizar_valores(_):
     robot_position.config(text=f"angulo 1: {angles_deg[0]:.2f} | angulo 2: {angles_deg[1]:.2f}\n coordenadas: {points_x[-1]:.2f}, {points_y[-1]:.2f}")
 
 root = tk.Tk()
-root.title("Cinemática direta")
+root.title("Cinemática inversa")
 
 tk.Label(root, text="Tamanho dos braços").grid(row=0, column=0, sticky="w")
-tk.Label(root, text="Posições").grid(row=0, column=1, sticky="w")
+tk.Label(root, text="Posições").grid(row=0, column=2, sticky="w")
 
 arm_1_scale = tk.Scale(root, from_=0, to=10, resolution=0.1, length=300, orient="horizontal", command=atualizar_valores)
 arm_1_scale.set(10)
 arm_1_scale.grid(row=1, column=0, padx=5, pady=5, sticky="w")
 
+tk.Label(root, text="x:").grid(row=1, column=1, padx=(5, 0), pady=(15, 0))
 x_scale = tk.Scale(root, from_=-20, to=20, resolution=0.1, length=300, orient="horizontal", command=atualizar_valores)
 x_scale.set(7)
-x_scale.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+x_scale.grid(row=1, column=2, padx=5, pady=5, sticky="w")
 
 arm_2_scale = tk.Scale(root, from_=0, to=10, resolution=0.1, length=300, orient="horizontal", command=atualizar_valores)
 arm_2_scale.set(10)
 arm_2_scale.grid(row=2, column=0, padx=5, pady=5, sticky="w")
 
+tk.Label(root, text="y:").grid(row=2, column=1, padx=(5, 0), pady=(15, 0))
 y_scale = tk.Scale(root, from_=-20, to=20, resolution=0.1, length=300, orient="horizontal", command=atualizar_valores)
 y_scale.set(7)
-y_scale.grid(row=2, column=1, padx=5, pady=5, sticky="w")
+y_scale.grid(row=2, column=2, padx=5, pady=5, sticky="w")
 
 
 fig = Figure(figsize=(5, 4), dpi=100)
@@ -103,9 +106,11 @@ ax.set_ylim(-20, 20)
 canvas = FigureCanvasTkAgg(fig, master=root)
 canvas.draw()
 graph = canvas.get_tk_widget()
-graph.grid(columnspan=2)
+graph.grid(columnspan=3)
 
 robot_position = tk.Label(root, text="")
-robot_position.grid(columnspan=2)
+robot_position.grid(columnspan=3)
+
+root.columnconfigure(1, minsize=10)
 
 root.mainloop()
